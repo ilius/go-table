@@ -9,24 +9,28 @@ import (
 func (t *Table) MergeRowsHorizontal(
 	out io.Writer,
 	items FormattedItemList,
-	maxWidth int,
+	maxWidthArg int,
 	sep string,
 	compact bool,
 ) {
-	margin := len(sep)
+	margin := uint16(len(sep))
 	colN := t.ColumnCount()
-	groupCount := (maxWidth + margin) / (t.TableWidth(margin) + margin)
+	if maxWidthArg > MAX_WIDTH {
+		maxWidthArg = MAX_WIDTH
+	}
+	maxWidth := uint16(maxWidthArg)
+	groupCount := int((maxWidth + margin) / (t.TableWidth(margin) + margin))
 	if groupCount < 1 {
 		groupCount = 1
 	}
-	getWidth := func(colI int, groupI int) int {
+	getWidth := func(colI int, groupI int) uint16 {
 		return t.columnWidth[t.Columns[colI].Name]
 	}
 	if compact {
 		extra, cellWidth := t.compactCalcH(items, maxWidth, margin, groupCount)
 		if extra > 0 {
 			groupCount += extra
-			getWidth = func(colI int, groupI int) int {
+			getWidth = func(colI int, groupI int) uint16 {
 				return cellWidth[groupI*colN+colI]
 			}
 		}
@@ -61,15 +65,15 @@ func (t *Table) MergeRowsHorizontal(
 
 func (t *Table) compactCalcH(
 	items FormattedItemList,
-	maxWidth int,
-	margin int,
+	maxWidth uint16,
+	margin uint16,
 	groupCountInit int,
-) (extra int, cellWidth []int) {
-	colN := t.ColumnCount()
+) (extra int, cellWidth []uint16) {
+	colN := uint16(t.ColumnCount())
 	for {
 		groupCount := groupCountInit + extra + 1
 		cellWidthNew := t.mergedRowsWidthH(items, groupCount)
-		totalWidth := margin*(groupCount-1) + innerMargin*(colN-1)*groupCount
+		totalWidth := margin*(uint16(groupCount)-1) + innerMargin*(colN-1)*uint16(groupCount)
 		for _, w := range cellWidthNew {
 			totalWidth += w
 		}
@@ -85,14 +89,14 @@ func (t *Table) compactCalcH(
 func (t *Table) mergedRowsWidthH(
 	items FormattedItemList,
 	groupCount int,
-) []int {
+) []uint16 {
 	itemN := items.Len()
 	colN := t.ColumnCount()
-	width := make([]int, 0, groupCount*colN)
+	width := make([]uint16, 0, groupCount*colN)
 	for groupI := 0; groupI < groupCount; groupI++ {
 		for colI := 0; colI < colN; colI++ {
-			mw := 0
-			for itemIdx := groupI; itemIdx < itemN; itemIdx += groupCount {
+			mw := uint16(0)
+			for itemIdx := int(groupI); itemIdx < itemN; itemIdx += int(groupCount) {
 				w := visualWidth(items.Get(itemIdx)[colI])
 				if w > mw {
 					mw = w

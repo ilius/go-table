@@ -56,7 +56,7 @@ func Test_visualWidth(t *testing.T) {
 
 func TestAlign(t *testing.T) {
 	is := is.New(t)
-	test := func(alignment Alignment, width int, str string, out string) {
+	test := func(alignment Alignment, width uint16, str string, out string) {
 		actualOut := alignment(str, width)
 		is.AddMsg(
 			"str=%#v",

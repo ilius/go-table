@@ -8,7 +8,8 @@ import (
 
 const reset = "\x1b[0m"
 const innerSep = " "
-const innerMargin = len(innerSep)
+const innerMargin = uint16(len(innerSep))
+const MAX_WIDTH = 65535 // 2^16 - 1
 
 type Column struct {
 	Type      reflect.Type
@@ -39,7 +40,7 @@ func (t *TableSpec) ColumnCount() int {
 
 type Table struct {
 	*TableSpec
-	columnWidth map[string]int
+	columnWidth map[string]uint16
 	// Data        []any
 }
 
@@ -56,11 +57,11 @@ func NewTable(spec *TableSpec) *Table {
 	}
 	return &Table{
 		TableSpec:   spec,
-		columnWidth: map[string]int{},
+		columnWidth: map[string]uint16{},
 	}
 }
 
-func (t *Table) UpdateWidth(widthByColumn map[string]int) {
+func (t *Table) UpdateWidth(widthByColumn map[string]uint16) {
 	for colName, width := range widthByColumn {
 		if width > t.columnWidth[colName] {
 			t.columnWidth[colName] = width
@@ -68,7 +69,7 @@ func (t *Table) UpdateWidth(widthByColumn map[string]int) {
 	}
 }
 
-func (t *Table) Width(colName string) int {
+func (t *Table) Width(colName string) uint16 {
 	return t.columnWidth[colName]
 }
 
@@ -136,8 +137,8 @@ func (t *Table) padColumnHeader(col *Column) string {
 	if width == 0 {
 		return value
 	}
-	if len(value) > width {
-		return strings.Repeat(" ", width)
+	if len(value) > int(width) {
+		return strings.Repeat(" ", int(width))
 	}
 	return AlignmentCenter(value, width)
 }
@@ -151,8 +152,8 @@ func (t *Table) FormatHeader(color string, sep string) string {
 	return str
 }
 
-func (t *Table) TableWidth(margin int) int {
-	width := (t.ColumnCount() - 1) * margin
+func (t *Table) TableWidth(margin uint16) uint16 {
+	width := (uint16(t.ColumnCount()) - 1) * margin
 	for _, col := range t.Columns {
 		width += t.Width(col.Name)
 	}

@@ -16,11 +16,11 @@ var ansiEscapeRE = regexp.MustCompile(
 	"[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]",
 )
 
-var widthCache = lru.New[string, int](lru.WithCapacity(10000))
+var widthCache = lru.New[string, uint16](lru.WithCapacity(10000))
 
 // runewidth.FillLeft(str, width) or runewidth.FillRight(str, width) do not work
 
-func visualWidth(str string) int {
+func visualWidth(str string) uint16 {
 	// method 1: without considering CJK, emoji, etc:
 	//		len(str) - countMatchesLength(ansiEscapeRE, str)
 	// method 2: without considering ANSI colors / escape sequences
@@ -31,7 +31,7 @@ func visualWidth(str string) int {
 	if w > 0 {
 		return w
 	}
-	w = runewidth.StringWidth(str) - countMatchesLength(ansiEscapeRE, str)
+	w = uint16(runewidth.StringWidth(str) - countMatchesLength(ansiEscapeRE, str))
 	widthCache.Set(str, w)
 	return w
 }

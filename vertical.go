@@ -9,24 +9,28 @@ import (
 func (t *Table) MergeRowsVertical(
 	out io.Writer,
 	items FormattedItemList,
-	maxWidth int,
+	maxWidthArg int,
 	sep string,
 	compact bool,
 ) {
-	margin := len(sep)
+	margin := uint16(len(sep))
 	colN := t.ColumnCount()
-	groupCount := (maxWidth + margin) / (t.TableWidth(margin) + margin)
+	if maxWidthArg > MAX_WIDTH {
+		maxWidthArg = MAX_WIDTH
+	}
+	maxWidth := uint16(maxWidthArg)
+	groupCount := int((maxWidth + margin) / (t.TableWidth(margin) + margin))
 	if groupCount < 1 {
 		groupCount = 1
 	}
-	getWidth := func(colI int, groupI int) int {
+	getWidth := func(colI int, groupI int) uint16 {
 		return t.columnWidth[t.Columns[colI].Name]
 	}
 	if compact {
 		extra, cellWidth := t.compactCalcV(items, maxWidth, margin, groupCount)
 		if extra > 0 {
 			groupCount += extra
-			getWidth = func(colI int, groupI int) int {
+			getWidth = func(colI int, groupI int) uint16 {
 				return cellWidth[groupI*colN+colI]
 			}
 		}
@@ -61,15 +65,15 @@ func (t *Table) MergeRowsVertical(
 
 func (t *Table) compactCalcV(
 	items FormattedItemList,
-	maxWidth int,
-	margin int,
+	maxWidth uint16,
+	margin uint16,
 	groupCountInit int,
-) (extra int, cellWidth []int) {
-	colN := t.ColumnCount()
+) (extra int, cellWidth []uint16) {
+	colN := uint16(t.ColumnCount())
 	for {
 		groupCount := groupCountInit + extra + 1
 		cellWidthNew := t.mergedRowsWidthV(items, groupCount)
-		totalWidth := margin*(groupCount-1) + innerMargin*(colN-1)*groupCount
+		totalWidth := margin*(uint16(groupCount)-1) + innerMargin*(colN-1)*uint16(groupCount)
 		for _, w := range cellWidthNew {
 			totalWidth += w
 		}
@@ -85,18 +89,18 @@ func (t *Table) compactCalcV(
 func (t *Table) mergedRowsWidthV(
 	items FormattedItemList,
 	groupCount int,
-) []int {
+) []uint16 {
 	itemN := items.Len()
 	colN := t.ColumnCount()
 	lineCount := (itemN-1)/groupCount + 1 // correct
-	cellWidth := make([]int, 0, groupCount*colN)
+	cellWidth := make([]uint16, 0, groupCount*colN)
 	for groupI := 0; groupI < groupCount; groupI++ {
 		endItemIdx := (groupI + 1) * lineCount
 		if endItemIdx > itemN {
 			endItemIdx = itemN
 		}
 		for colI := 0; colI < colN; colI++ {
-			mcw := 0 // max cell width
+			mcw := uint16(0) // max cell width
 			for itemIdx := groupI * lineCount; itemIdx < endItemIdx; itemIdx++ {
 				cw := visualWidth(items.Get(itemIdx)[colI])
 				if cw > mcw {
