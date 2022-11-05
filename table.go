@@ -14,9 +14,9 @@ const MAX_WIDTH = 65535 // 2^16 - 1
 type Column struct {
 	Type      reflect.Type
 	Getter    Getter
+	Alignment Alignment
 	Name      string
 	Title     string
-	Alignment Alignment
 }
 
 type TableSpec struct {
