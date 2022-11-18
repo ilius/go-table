@@ -6,10 +6,12 @@ import (
 	"strings"
 )
 
-const reset = "\x1b[0m"
-const innerSep = " "
-const innerMargin = uint16(len(innerSep))
-const MAX_WIDTH = 65535 // 2^16 - 1
+const (
+	reset       = "\x1b[0m"
+	innerSep    = " "
+	innerMargin = uint16(len(innerSep))
+	MAX_WIDTH   = 65535 // 2^16 - 1
+)
 
 type Column struct {
 	Type      reflect.Type

@@ -11,7 +11,7 @@ func AlignmentLeft(str string, width uint16) string {
 	if strWidth >= width {
 		return str
 	}
-	return str + strings.Repeat(alignSep, int(width - strWidth))
+	return str + strings.Repeat(alignSep, int(width-strWidth))
 }
 
 func AlignmentRight(str string, width uint16) string {
@@ -19,7 +19,7 @@ func AlignmentRight(str string, width uint16) string {
 	if strWidth >= width {
 		return str
 	}
-	return strings.Repeat(alignSep, int(width - strWidth)) + str
+	return strings.Repeat(alignSep, int(width-strWidth)) + str
 }
 
 func AlignmentCenter(str string, width uint16) string {

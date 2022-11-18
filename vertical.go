@@ -107,7 +107,7 @@ func (t *Table) mergedRowsWidthV(
 					mcw = cw
 				}
 			}
-			//cellWidth[groupI*colN+colI] = mcw
+			// cellWidth[groupI*colN+colI] = mcw
 			cellWidth = append(cellWidth, mcw)
 		}
 	}
