@@ -76,7 +76,6 @@ func (t *Table) compactCalcV(
 		if cellWidthNew == nil {
 			return
 		}
-		fmt.Printf("extra=%d, cellWidthNew=%#v\n", extra, cellWidthNew)
 		totalWidth := margin*(uint16(groupCount)-1) + innerMargin*(colN-1)*uint16(groupCount)
 		for _, w := range cellWidthNew {
 			totalWidth += w
