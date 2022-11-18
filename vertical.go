@@ -73,6 +73,10 @@ func (t *Table) compactCalcV(
 	for {
 		groupCount := groupCountInit + extra + 1
 		cellWidthNew := t.mergedRowsWidthV(items, groupCount)
+		if cellWidthNew == nil {
+			return
+		}
+		fmt.Printf("extra=%d, cellWidthNew=%#v\n", extra, cellWidthNew)
 		totalWidth := margin*(uint16(groupCount)-1) + innerMargin*(colN-1)*uint16(groupCount)
 		for _, w := range cellWidthNew {
 			totalWidth += w
@@ -93,6 +97,14 @@ func (t *Table) mergedRowsWidthV(
 	itemN := items.Len()
 	colN := t.ColumnCount()
 	lineCount := (itemN-1)/groupCount + 1 // correct
+	if groupCount > (itemN-1)/lineCount+1 {
+		// <=> groupCount - 1 > (itemN - 1) / lineCount
+		// <=> (groupCount - 1) * lineCount > itemN-1
+		// so the last run of loop won't do anything other than appending
+		// some zero to cellWidth array
+		// and this groupCount will not give us anything
+		return nil
+	}
 	cellWidth := make([]uint16, 0, groupCount*colN)
 	for groupI := 0; groupI < groupCount; groupI++ {
 		endItemIdx := (groupI + 1) * lineCount
