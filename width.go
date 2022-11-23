@@ -4,7 +4,7 @@ import (
 	"regexp"
 
 	"github.com/ilius/go-lru"
-	"github.com/ilius/go-runewidth"
+	"github.com/ilius/go-table/runewidth"
 )
 
 // ilius/go-lru		is a fork of dboslee/lru, without loads of depedencies
