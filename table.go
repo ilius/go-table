@@ -145,12 +145,12 @@ func (t *Table) padColumnHeader(col *Column) string {
 	return AlignmentCenter(value, width)
 }
 
-func (t *Table) FormatHeader(color string, sep string) string {
-	str := color
+func (t *Table) FormatHeader(sep string) string {
+	str := ""
 	for _, col := range t.Columns {
 		str += t.padColumnHeader(col) + sep
 	}
-	str += reset + "\n"
+	str += "\n"
 	return str
 }
 
