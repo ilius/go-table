@@ -7,6 +7,8 @@ import (
 	"github.com/ilius/is/v2"
 )
 
+const reset = "\x1b[0m"
+
 // Fg wraps an 8-bit foreground color code in the ANSI escape sequence
 func Fg(code int) string {
 	return "\x1b[38;5;" + strconv.Itoa(code) + "m"

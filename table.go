@@ -7,7 +7,6 @@ import (
 )
 
 const (
-	reset       = "\x1b[0m"
 	innerSep    = " "
 	innerMargin = uint16(len(innerSep))
 	MAX_WIDTH   = 65535 // 2^16 - 1
