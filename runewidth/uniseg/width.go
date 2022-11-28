@@ -40,15 +40,3 @@ func runeWidth(r rune, graphemeProperty int) int {
 
 	return 1
 }
-
-// StringWidth returns the monospace width for the given string, that is, the
-// number of same-size cells to be occupied by the string.
-func StringWidth(s string) (width int) {
-	state := -1
-	for len(s) > 0 {
-		var w int
-		_, s, w, state = FirstGraphemeClusterInString(s, state)
-		width += w
-	}
-	return
-}

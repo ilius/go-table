@@ -159,10 +159,3 @@ func propertySearch[E interface{ [3]int | [4]int }](dictionary []E, r rune) (res
 func property(dictionary [][3]int, r rune) int {
 	return propertySearch(dictionary, r)[2]
 }
-
-// propertyWithGenCat returns the Unicode property value and General Category
-// (see constants above) of the given code point.
-func propertyWithGenCat(dictionary [][4]int, r rune) (property, generalCategory int) {
-	entry := propertySearch(dictionary, r)
-	return entry[2], entry[3]
-}
