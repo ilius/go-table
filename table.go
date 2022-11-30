@@ -3,7 +3,6 @@ package table
 import (
 	"fmt"
 	"reflect"
-	"strings"
 )
 
 const (
@@ -18,6 +17,8 @@ type Column struct {
 	Alignment Alignment
 	Name      string
 	Title     string
+
+	ShortTitle     string
 }
 
 type TableSpec struct {
@@ -139,7 +140,11 @@ func (t *Table) padColumnHeader(col *Column) string {
 		return value
 	}
 	if len(value) > int(width) {
-		return strings.Repeat(" ", int(width))
+		if len(col.ShortTitle) > int(width) {
+			value = ""
+		} else {
+			value = col.ShortTitle
+		}
 	}
 	return AlignmentCenter(value, width)
 }
