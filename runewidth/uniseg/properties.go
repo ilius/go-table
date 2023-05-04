@@ -89,42 +89,6 @@ const (
 	prEmojiPresentation
 )
 
-// Unicode General Categories. Only the ones needed in the context of this
-// package are included.
-const (
-	gcNone = iota // gcNone must be 0.
-	gcCc
-	gcZs
-	gcPo
-	gcSc
-	gcPs
-	gcPe
-	gcSm
-	gcPd
-	gcNd
-	gcLu
-	gcSk
-	gcPc
-	gcLl
-	gcSo
-	gcLo
-	gcPi
-	gcCf
-	gcNo
-	gcPf
-	gcLC
-	gcLm
-	gcMn
-	gcMe
-	gcMc
-	gcNl
-	gcZl
-	gcZp
-	gcCn
-	gcCs
-	gcCo
-)
-
 // Special code points.
 const (
 	vs15 = 0xfe0e // Variation Selector-15 (text presentation)
