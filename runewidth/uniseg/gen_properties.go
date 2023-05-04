@@ -49,6 +49,10 @@ const (
 // The regular expression for a line containing a code point range property.
 var propertyPattern = regexp.MustCompile(`^([0-9A-F]{4,6})(\.\.([0-9A-F]{4,6}))?\s*;\s*([A-Za-z0-9_]+)\s*#\s(.+)$`)
 
+var client = &http.Client{
+	Timeout: 30 * time.Second,
+}
+
 func main() {
 	if len(os.Args) < 5 {
 		fmt.Println("Not enough arguments, see code for details")
@@ -113,7 +117,7 @@ func parse(propertyURL, emojiProperty string, includeGeneralCategory bool) (stri
 	// Open the first URL.
 	if propertyURL != "" {
 		log.Printf("Parsing %s", propertyURL)
-		res, err := http.Get(propertyURL)
+		res, err := client.Get(propertyURL)
 		if err != nil {
 			return "", err
 		}
@@ -147,7 +151,7 @@ func parse(propertyURL, emojiProperty string, includeGeneralCategory bool) (stri
 	// Open the second URL.
 	if emojiProperty != "" {
 		log.Printf("Parsing %s", emojiURL)
-		res, err := http.Get(emojiURL)
+		res, err := client.Get(emojiURL)
 		if err != nil {
 			return "", err
 		}
