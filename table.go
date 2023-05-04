@@ -18,7 +18,7 @@ type Column struct {
 	Name      string
 	Title     string
 
-	ShortTitle     string
+	ShortTitle string
 }
 
 type TableSpec struct {
