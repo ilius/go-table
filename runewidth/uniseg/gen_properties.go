@@ -15,9 +15,6 @@
 //     - "gencat": include general category properties.
 //
 //go:generate go run gen_properties.go auxiliary/GraphemeBreakProperty graphemeproperties.go graphemeCodePoints graphemes emojis=Extended_Pictographic
-//go:generate go run gen_properties.go auxiliary/WordBreakProperty wordproperties.go workBreakCodePoints words emojis=Extended_Pictographic
-//go:generate go run gen_properties.go auxiliary/SentenceBreakProperty sentenceproperties.go sentenceBreakCodePoints sentences
-//go:generate go run gen_properties.go LineBreak lineproperties.go lineBreakCodePoints lines gencat
 //go:generate go run gen_properties.go EastAsianWidth eastasianwidth.go eastAsianWidth eastasianwidth
 //go:generate go run gen_properties.go - emojipresentation.go emojiPresentation emojipresentation emojis=Emoji_Presentation
 package main
