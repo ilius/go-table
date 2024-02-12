@@ -59,7 +59,10 @@ func (t *Table) MergeRowsHorizontal(
 			}
 			line = append(line, strings.Join(cell, innerSep))
 		}
-		fmt.Fprintln(out, strings.Join(line, sep))
+		_, err := fmt.Fprintln(out, strings.Join(line, sep))
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
