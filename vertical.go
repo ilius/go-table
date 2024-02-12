@@ -89,7 +89,6 @@ func (t *Table) compactCalcV(
 		cellWidth = cellWidthNew
 		extra += 1
 	}
-	return 0, nil
 }
 
 func (t *Table) mergedRowsWidthV(
