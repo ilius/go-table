@@ -231,38 +231,6 @@ func TestRuneWidth(t *testing.T) {
 	}
 }
 
-var isambiguouswidthtests = []struct {
-	in  rune
-	out bool
-}{
-	{'世', false},
-	{'■', true},
-	{'界', false},
-	{'○', true},
-	{'㈱', false},
-	{'①', true},
-	{'②', true},
-	{'③', true},
-	{'④', true},
-	{'⑤', true},
-	{'⑥', true},
-	{'⑦', true},
-	{'⑧', true},
-	{'⑨', true},
-	{'⑩', true},
-	{'⑪', true},
-	{'⑫', true},
-	{'⑬', true},
-	{'⑭', true},
-	{'⑮', true},
-	{'⑯', true},
-	{'⑰', true},
-	{'⑱', true},
-	{'⑲', true},
-	{'⑳', true},
-	{'☆', true},
-}
-
 var stringwidthtests = []struct {
 	in    string
 	out   int
@@ -294,19 +262,6 @@ func TestStringWidthInvalid(t *testing.T) {
 	if out := StringWidth(s); out != 14 {
 		t.Errorf("StringWidth(%q) = %d, want %d", s, out, 14)
 	}
-}
-
-var isneutralwidthtests = []struct {
-	in  rune
-	out bool
-}{
-	{'→', false},
-	{'┊', false},
-	{'┈', false},
-	{'～', false},
-	{'└', false},
-	{'⣀', true},
-	{'⣀', true},
 }
 
 func TestEnv(t *testing.T) {
