@@ -23,7 +23,7 @@ func (t *Table) MergeRowsHorizontal(
 	if groupCount < 1 {
 		groupCount = 1
 	}
-	getWidth := func(colI int, groupI int) uint16 {
+	getWidth := func(colI int, _ int) uint16 {
 		return t.columnWidth[t.Columns[colI].Name]
 	}
 	if compact {
